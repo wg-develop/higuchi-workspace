@@ -43,7 +43,7 @@ public class UnitychanMove : MonoBehaviour
       }
      //ジャンプアニメーションとの調整
      if(animator.GetCurrentAnimatorStateInfo(0).IsName("JumpToTop")){
-       moveDirection.y =  y * 3;
+       moveDirection.y =  y ;
 　     transform.position += moveDirection ;
        animator.SetBool("is_jump",false);
      }
