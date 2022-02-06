@@ -17,7 +17,6 @@ public class UnitychanMove : MonoBehaviour
  // ジャンプ用フラグ
   private bool is_ground;
 
-
   private AnimatorStateInfo currentState;
 
     void Start()
@@ -41,11 +40,15 @@ public class UnitychanMove : MonoBehaviour
           jumpping(true);
         }
       }
-     //ジャンプアニメーションとの調整
-     if(animator.GetCurrentAnimatorStateInfo(0).IsName("JumpToTop")){
-       moveDirection.y =  y ;
+
+     //ジャンプアニメーションの調整
+     if(animator.GetCurrentAnimatorStateInfo(0).IsName("JumpToTop")){      moveDirection.y =  y ;
 　     transform.position += moveDirection ;
-       animator.SetBool("is_jump",false);
+     }
+     if(animator.GetCurrentAnimatorStateInfo(0).IsName("fall")){
+       if(moveDirection.y  < 0.7){
+         animator.SetBool("is_jump",false);
+      }
      }
 
       //右へ移動
