@@ -7,8 +7,8 @@ public class UnitychanMove : MonoBehaviour
   private Animator animator;
     // Start is called before the first frame update
    private Vector3 moveDirection = new Vector3(0,0,0);
-   private float x = 0.06f; //移動速度
-   private float y = 0.1f; //ジャンプ力
+   public float x; //移動速度
+   public float y; //ジャンプ力
 
   // キャラクターコントローラの参照
   private CapsuleCollider col;
@@ -30,6 +30,7 @@ public class UnitychanMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+      //Debug.Log("フレーム間の経過秒数：" + Time.deltaTime);
       moveDirection.x = 0;
       moveDirection.y = 0;
       //ジャンプ
@@ -42,8 +43,9 @@ public class UnitychanMove : MonoBehaviour
       }
 
      //ジャンプアニメーションの調整
-     if(animator.GetCurrentAnimatorStateInfo(0).IsName("JumpToTop")){      moveDirection.y =  y ;
-　     transform.position += moveDirection ;
+     if(animator.GetCurrentAnimatorStateInfo(0).IsName("JumpToTop")){
+       moveDirection.y =  y * Time.deltaTime ;
+       transform.position += moveDirection ;
      }
      if(animator.GetCurrentAnimatorStateInfo(0).IsName("fall")){
        if(moveDirection.y  < 0.7){
@@ -68,7 +70,7 @@ public class UnitychanMove : MonoBehaviour
 
     void moving(bool is_move , int val){
       if(is_move){
-        moveDirection.x =  x * val;
+        moveDirection.x =  x * val * Time.deltaTime;
         transform.position += moveDirection ;
         animator.SetBool("is_running", true);
       }
