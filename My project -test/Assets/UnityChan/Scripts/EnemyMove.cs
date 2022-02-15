@@ -58,4 +58,10 @@ public class EnemyMove : MonoBehaviour
         Debug.Log("Hit"); // ログを表示する
         moving(false,0);
     }
+
+    //Unityちゃんの足音を再生する（「Running@loop」Animationから呼ばれる）
+    public void PlayFootstepSE()
+    {
+        //エネミーにも足音をつけるとうるさそうなので保留
+    }
 }

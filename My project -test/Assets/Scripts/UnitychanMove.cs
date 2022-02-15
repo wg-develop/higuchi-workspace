@@ -9,9 +9,12 @@ public class UnitychanMove : MonoBehaviour
    private Vector3 moveDirection = new Vector3(0,0,0);
    public float x; //移動速度
    public float y; //ジャンプ力
+   public float volume; //音量
+    [SerializeField] AudioClip[] clips; //オーディオ
+    protected AudioSource source; //オーディオ
 
-  // キャラクターコントローラの参照
-  private CapsuleCollider col;
+    // キャラクターコントローラの参照
+    private CapsuleCollider col;
   private Rigidbody rb;
 
  // ジャンプ用フラグ
@@ -24,6 +27,7 @@ public class UnitychanMove : MonoBehaviour
         animator = GetComponent<Animator>();
         col = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
+        source = GetComponents<AudioSource>()[0];
         Debug.Log("start");
     }
 
@@ -82,6 +86,10 @@ public class UnitychanMove : MonoBehaviour
     void jumpping(bool is_jump){
       if(is_jump){
         animator.SetBool("is_jump",true);
+
+        //ジャンプ音
+        source.volume = volume;
+        source.PlayOneShot(clips[1]);
       }
     }
 
@@ -94,4 +102,9 @@ public class UnitychanMove : MonoBehaviour
    }
    void OnCollisionExit(){}
 
-  }
+    //Unityちゃんの足音を再生する（「Running@loop」Animationから呼ばれる）
+    public void PlayFootstepSE(){
+        source.volume = volume * 0.4f;
+        source.PlayOneShot(clips[0]);
+    }
+}
