@@ -760,7 +760,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1467274291}
-  timerGameObject: {fileID: 0}
+  timerGameObject: {fileID: 143509291}
 --- !u!114 &457912753
 MonoBehaviour:
   m_ObjectHideFlags: 0
