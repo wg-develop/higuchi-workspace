@@ -36,7 +36,6 @@ public class TimerStartButtonScript : MonoBehaviour
             buttonText.text = "Start";
             timerScript.StopTimer();
             buttonFlag = true;
-            Debug.Log("c‚è•b”F" + timerScript.GetTimer());
         }
     }
 }

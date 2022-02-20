@@ -25,6 +25,11 @@ public class TimerScript : MonoBehaviour
         if(countFlag == true)
         {
             timer -= Time.deltaTime;
+            if (timer < 0)
+            {
+                timer = 0;
+                Timeup();
+            }
             CountTimer();
         }
 //        Debug.Log("Œo‰ßŽžŠÔ(•b)" + Time.time);
@@ -51,6 +56,7 @@ public class TimerScript : MonoBehaviour
     public void StopTimer()
     {
         this.countFlag = false;
+        Debug.Log("Žc‚è•b”F" + timer);
     }
     public void ResetTimer()
     {
@@ -64,5 +70,11 @@ public class TimerScript : MonoBehaviour
     public void Hide()
     {
         this.text.enabled = false;
+    }
+    private void Timeup()
+    {
+        //00:00‚Ìˆ—‚ð‘‚­
+        StopTimer();
+        this.countFlag = false;
     }
 }

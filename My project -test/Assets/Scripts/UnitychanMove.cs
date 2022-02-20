@@ -34,11 +34,11 @@ public class UnitychanMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      //Debug.Log("フレーム間の経過秒数：" + Time.deltaTime);
-      moveDirection.x = 0;
-      moveDirection.y = 0;
-      //ジャンプ
-      if(Input.GetKeyDown(KeyCode.W)){
+        moveDirection.x = 0;
+        moveDirection.y = 0;
+        transform.position = new Vector3(transform.position.x, transform.position.y, 0.0f);
+        //ジャンプ
+        if (Input.GetKeyDown(KeyCode.W)){
         if(is_ground){
           is_ground = false;
 
