@@ -15,7 +15,6 @@ public class UnitychanMove : MonoBehaviour
     protected AudioSource source; //オーディオ
     private Rigidbody rigidBody;
     public float impulse;
-    private bool damageFlag = false; //被ダメフラグ
     public float damageTime; //被ダメ時間
     private float countDamageTime = 0; //被ダメ時間計算用
     private bool momentumCancelFlag = false; //吹っ飛び緩和フラグ
@@ -31,6 +30,7 @@ public class UnitychanMove : MonoBehaviour
         source = GetComponents<AudioSource>()[0];
         rigidBody = GetComponent<Rigidbody>();
         Debug.Log("start");
+        Debug.Log("Render:" + GetComponent<Renderer>());
     }
 
     // Update is called once per frame
@@ -43,10 +43,10 @@ public class UnitychanMove : MonoBehaviour
 
         transform.position = new Vector3(transform.position.x, transform.position.y, 0.0f);
         //被ダメした場合の処理
-        if (damageFlag) damageMotion();
+        if (animator.GetBool("Damaged")) damageMotion();
 
         //ジャンプ
-        if (Input.GetKeyDown(KeyCode.W) && !damageFlag)
+        if (Input.GetKeyDown(KeyCode.W) && !animator.GetBool("Damaged"))
         {
             if (is_ground)
             {
@@ -69,13 +69,13 @@ public class UnitychanMove : MonoBehaviour
             }
         }
         //右へ移動
-        if (Input.GetKey(KeyCode.D) && !damageFlag)
+        if (Input.GetKey(KeyCode.D) && !animator.GetBool("Damaged"))
         {
             this.transform.rotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
             moving(true, 1);
         }
         //左へ移動
-        else if (Input.GetKey(KeyCode.A) && !damageFlag)
+        else if (Input.GetKey(KeyCode.A) && !animator.GetBool("Damaged"))
         {
             transform.rotation = Quaternion.Euler(0.0f, -90.0f, 0.0f);
             moving(true, -1);
@@ -120,7 +120,7 @@ public class UnitychanMove : MonoBehaviour
     void damageMotion()
     {
         //被ダメ後の無敵時間
-        if (damageFlag)
+        if (animator.GetBool("Damaged"))
         {
             //            Color color = renderer.material.color;
             //            color.a = Mathf.Sin(Time.time) / 2 + 0.5f;
@@ -133,7 +133,7 @@ public class UnitychanMove : MonoBehaviour
             if (countDamageTime > damageTime)
             {
                 countDamageTime = 0;
-                damageFlag = false;
+                animator.SetBool("Damaged", false);
                 momentumCancelFlag = false;
                 //                color.a = 1.0f;
             }
@@ -150,7 +150,7 @@ public class UnitychanMove : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "trap" && !damageFlag)
+        if (collision.gameObject.tag == "trap" && !animator.GetBool("Damaged"))
         {
             if (transform.localEulerAngles.y == 90)
             {
@@ -160,7 +160,7 @@ public class UnitychanMove : MonoBehaviour
             {
                 rigidBody.AddForce(new Vector3(1.0f, 1.0f, 0.0f) * impulse, ForceMode.Force);
             }
-            damageFlag = true;
+            animator.SetBool("Damaged", true);
 
             //ダメージ音
             playSE(2, 1.0f, 1.2f);
