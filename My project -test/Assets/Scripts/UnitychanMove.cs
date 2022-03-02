@@ -91,6 +91,7 @@ public class UnitychanMove : MonoBehaviour
         if (is_move)
         {
             moveDirection.x = x * val * Time.deltaTime;
+            moveDirection.y = 0;
             transform.position += moveDirection;
             animator.SetBool("is_running", true);
         }
