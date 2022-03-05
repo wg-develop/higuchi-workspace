@@ -13,6 +13,7 @@ public class EnemyMove : MonoBehaviour
     private float enemySpeed = 0.03f; //移動速度
     private string playerName = "SD_unitychan_humanoid"; //プレイヤーオブジェクト名
     private Vector3 startPosition = new Vector3(-10, -0.2f, 0); //敵スタート位置
+    public static float remainingTime = 0;
 
     void Start()
     {
@@ -24,9 +25,9 @@ public class EnemyMove : MonoBehaviour
     {
         transform.position = new Vector3(transform.position.x, transform.position.y, 0.0f);
 
-        float timer = timerScript.GetTimer();
+        remainingTime = timerScript.GetTimer(); //残り時間
         bool isStartedTimer = timerScript.countFlag;
-        if (timer == 120.0f)
+        if (remainingTime == 120.0f)
         {
             // 停止→リセット時
             transform.position = startPosition;
@@ -35,9 +36,9 @@ public class EnemyMove : MonoBehaviour
         if (isStartedTimer)
         {
             // タイマー起動中
-            if (timer == 0.0f)
+            if (remainingTime == 0.0f)
             {
-                // 120秒逃げ切った場合：ゲームクリア画面に遷移？
+                // 120秒逃げ切った場合：タイムアップ処理
                 Moving(false, 0);
             }
             EnemyMoveControl();
@@ -108,7 +109,7 @@ public class EnemyMove : MonoBehaviour
         if (collision.gameObject.name == playerName)
         {
             // 敵とプレイヤーがぶつかったらゲームオーバー画面へ遷移する
-            //SceneManager.LoadScene("GameOverScene");
+            SceneManager.LoadScene("GameOverScene");
         }
     }
 

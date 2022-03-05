@@ -1,17 +1,28 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 public class GameOverSceneButton : MonoBehaviour
 {
+
     /// <summary>
     /// Restartボタン押下時にゲーム画面へ戻る処理
     /// </summary>
     public void RestartGame()
     {
         SceneManager.LoadScene("SampleScene");
+    }
+
+    /// <summary>
+    /// ReturnTitleボタン押下時にタイトル画面へ戻る処理
+    /// </summary>
+    public void ReturnTitle()
+    {
+        SceneManager.LoadScene("TitleScene");
     }
 
     /// <summary>
