@@ -1,0 +1,32 @@
+{
+    "sample":"map1",
+    "blocks":[
+        {
+            "type":"floor1",
+            "posX":10,
+            "posY":10,
+            "posZ":0,
+            "scaleX":1,
+            "scaleY":1,
+            "scaleZ":1
+        },
+        {
+            "type":"floor2",
+            "posX":12,
+            "posY":12,
+            "posZ":0,
+            "scaleX":1,
+            "scaleY":1,
+            "scaleZ":1
+        },
+        {
+            "type":"floor3",
+            "posX":14,
+            "posY":14,
+            "posZ":0,
+            "scaleX":1,
+            "scaleY":1,
+            "scaleZ":1
+        }
+    ]
+}
