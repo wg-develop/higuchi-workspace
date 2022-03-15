@@ -18,6 +18,8 @@ public class UnitychanMove : MonoBehaviour
     public float damageTime; //被ダメ時間
     private float countDamageTime = 0; //被ダメ時間計算用
     private bool momentumCancelFlag = false; //吹っ飛び緩和フラグ
+    private GameObject childGameObject0;
+    private GameObject childGameObject1;
 
     // ジャンプ用フラグ
     private bool is_ground;
@@ -26,6 +28,9 @@ public class UnitychanMove : MonoBehaviour
 
     void Start()
     {
+        childGameObject0 = transform.GetChild(0).gameObject;
+        childGameObject1 = transform.GetChild(1).gameObject;
+
         animator = GetComponent<Animator>();
         source = GetComponents<AudioSource>()[0];
         rigidBody = GetComponent<Rigidbody>();
@@ -126,6 +131,10 @@ public class UnitychanMove : MonoBehaviour
             //            Color color = renderer.material.color;
             //            color.a = Mathf.Sin(Time.time) / 2 + 0.5f;
             countDamageTime++;
+
+            childGameObject0.SetActive(!childGameObject0.activeSelf);
+            childGameObject1.SetActive(!childGameObject1.activeSelf);
+            Debug.Log("Active:" + childGameObject1.activeSelf);
             if (countDamageTime > damageTime * 0.25 && !momentumCancelFlag)
             {
                 rigidBody.velocity = new Vector3(rigidBody.velocity.x * 0.1f, rigidBody.velocity.y * 0.1f, rigidBody.velocity.z);
@@ -137,6 +146,8 @@ public class UnitychanMove : MonoBehaviour
                 animator.SetBool("Damaged", false);
                 momentumCancelFlag = false;
                 //                color.a = 1.0f;
+                childGameObject0.SetActive(true);
+                childGameObject1.SetActive(true);
             }
             //            renderer.material.color = color;
         }
