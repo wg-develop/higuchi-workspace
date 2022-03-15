@@ -9,12 +9,15 @@ public class TimerStartButtonScript : MonoBehaviour
     private TimerScript timerScript;
     private Text buttonText;
     private bool buttonFlag = true;
+    public GameObject gameUIGameObject;
+    private GameUIScript gameUIScript;
 
     // Start is called before the first frame update
     void Start()
     {
         buttonText = GetComponentInChildren<Text>();
         timerScript = timerGameObject.GetComponent<TimerScript>();
+        gameUIScript = gameUIGameObject.GetComponent<GameUIScript>();
     }
 
     // Update is called once per frame
@@ -36,6 +39,8 @@ public class TimerStartButtonScript : MonoBehaviour
             buttonText.text = "Start";
             timerScript.StopTimer();
             buttonFlag = true;
+
+            gameUIScript.initPosition();
         }
     }
 }

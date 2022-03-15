@@ -134,7 +134,6 @@ public class UnitychanMove : MonoBehaviour
 
             childGameObject0.SetActive(!childGameObject0.activeSelf);
             childGameObject1.SetActive(!childGameObject1.activeSelf);
-            Debug.Log("Active:" + childGameObject1.activeSelf);
             if (countDamageTime > damageTime * 0.25 && !momentumCancelFlag)
             {
                 rigidBody.velocity = new Vector3(rigidBody.velocity.x * 0.1f, rigidBody.velocity.y * 0.1f, rigidBody.velocity.z);
