@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class FollowCameraScript : MonoBehaviour
 {
+    public Vector3 cameraRelativePosition;
     private GameObject player; //SDUnityChan 除法格納用
     private Vector3 offset; //相対距離取得用
+    private Vector3 trapPhaseCameraPosition = new Vector3(16.22441f, 10.51222f, -32.98122f);
 
     // Start is called before the first frame update
     void Start()
@@ -13,7 +15,8 @@ public class FollowCameraScript : MonoBehaviour
       //SDUnityChan
       this.player = GameObject.Find("SD_unitychan_humanoid");
       //MaincameraとSDUnityChanの相対距離
-      offset = transform.position - player.transform.position;
+      //offset = transform.position - player.transform.position;
+      offset = cameraRelativePosition + player.transform.position;
     }
 
     // Update is called once per frame
@@ -21,6 +24,12 @@ public class FollowCameraScript : MonoBehaviour
     {
       //Debug.Log("SDUnityChan＠カメラ"+player.transform.position);
       //Maincameraを追従（SDUnitychanにあわせて移動）
-      transform.position = player.transform.position + offset;
+        if (CommonScript.phaseFlag)
+        {
+            transform.position = trapPhaseCameraPosition;
+        } else
+        {
+            transform.position = player.transform.position + offset;
+        }
     }
 }

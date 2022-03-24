@@ -11,6 +11,7 @@ public class TimerStartButtonScript : MonoBehaviour
     private bool buttonFlag = true;
     public GameObject gameUIGameObject;
     private GameUIScript gameUIScript;
+    public GameObject trapPhaseUIGameObject;
 
     // Start is called before the first frame update
     void Start()
@@ -40,7 +41,14 @@ public class TimerStartButtonScript : MonoBehaviour
             timerScript.StopTimer();
             buttonFlag = true;
 
-            gameUIScript.initPosition();
+            changePhase();
         }
+    }
+    public void changePhase()
+    {
+        gameUIScript.initPosition();
+        trapPhaseUIGameObject.SetActive(true);
+//        this.gameObject.SetActive(false);
+//        CommonScript.phaseFlag = true;
     }
 }
