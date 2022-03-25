@@ -13,7 +13,7 @@ public class SetTrapButtonScript : MonoBehaviour
     void Start()
     {
         buttonText = GetComponentInChildren<Text>();
-        setActiveChildGameObjects(false);
+        SetActiveChildGameObjects(false);
     }
 
     // Update is called once per frame
@@ -28,21 +28,27 @@ public class SetTrapButtonScript : MonoBehaviour
         {
             buttonText.text = "�߂�";
             buttonFlag = false;
-            setActiveChildGameObjects(true);
+            SetActiveChildGameObjects(true);
         }
         else
         {
             buttonText.text = "㩐ݒu";
             buttonFlag = true;
-            setActiveChildGameObjects(false);
+            SetActiveChildGameObjects(false);
         }
     }
-
-    public void setActiveChildGameObjects(bool flag)
+    public void Init()
     {
-        for (int i = 0; i < buttonGameObjects.Length; i++)
+        buttonText.text = "㩐ݒu";
+        buttonFlag = true;
+        SetActiveChildGameObjects(false);
+    }
+
+    public void SetActiveChildGameObjects(bool flag)
+    {
+        foreach (GameObject buttonGameObject in buttonGameObjects)
         {
-            buttonGameObjects[i].SetActive(flag);
+            buttonGameObject.SetActive(flag);
         }
     }
 }

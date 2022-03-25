@@ -161,7 +161,7 @@ public class UnitychanMove : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "trap" && !animator.GetBool("Damaged"))
+        if (collision.gameObject.tag == "damagetrap" && !animator.GetBool("Damaged"))
         {
             if (transform.localEulerAngles.y == 90)
             {

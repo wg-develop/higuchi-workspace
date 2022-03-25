@@ -6,6 +6,7 @@ TagManager:
   tags:
   - floor
   - trap
+  - damagetrap
   layers:
   - Default
   - TransparentFX
