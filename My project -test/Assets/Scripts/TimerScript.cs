@@ -71,10 +71,18 @@ public class TimerScript : MonoBehaviour
     {
         this.text.enabled = false;
     }
-    private void Timeup()
+    public void Timeup()
     {
         //00:00ÇÃèàóùÇèëÇ≠
         StopTimer();
+        ResetTimer();
         this.countFlag = false;
+        if (CommonScript.phase == CommonScript.Phase.STARTESCAPE || CommonScript.phase == CommonScript.Phase.ESCAPEPHASE)
+        {
+            CommonScript.phase = CommonScript.Phase.TRAPPHASE;
+        } else if (CommonScript.phase == CommonScript.Phase.TRAPPHASE)
+        {
+            CommonScript.phase = CommonScript.Phase.STARTESCAPE;
+        }
     }
 }

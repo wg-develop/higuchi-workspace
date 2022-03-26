@@ -8,9 +8,11 @@ public class UnitychanMove : MonoBehaviour
     private Animator animator;
     // Start is called before the first frame update
     private Vector3 moveDirection = new Vector3(0, 0, 0);
-    public float x; //移動速度
-    public float y; //ジャンプ力
+    public float speed; //移動速度
+    public float jumpPower; //ジャンプ力
     public float volume; //音量
+    private Vector3 initPosition; //初期位置
+    private bool setTrapPhaseInitFlag = false; //罠設置フェーズ切り替え時の初期化処理用
     [SerializeField] AudioClip[] clips; //オーディオ
     protected AudioSource source; //オーディオ
     private Rigidbody rigidBody;
@@ -28,42 +30,54 @@ public class UnitychanMove : MonoBehaviour
 
     void Start()
     {
+        initPosition = transform.position;
         childGameObject0 = transform.GetChild(0).gameObject;
         childGameObject1 = transform.GetChild(1).gameObject;
 
         animator = GetComponent<Animator>();
         source = GetComponents<AudioSource>()[0];
         rigidBody = GetComponent<Rigidbody>();
-        Debug.Log("start");
-        Debug.Log("Render:" + GetComponent<Renderer>());
     }
 
     // Update is called once per frame
     void Update()
     {
-        //   Debug.Log("velocity:" + rigidBody.velocity);
+        //罠設置フェーズの処理
+        if (CommonScript.phase == CommonScript.Phase.TRAPPHASE)
+        {
+            if (!setTrapPhaseInitFlag)
+            {
+                transform.position = initPosition;
+                setTrapPhaseInitFlag = true;
+            }
+            Moving(false, 0);
+            BasicProcess();
+            //            BasicAction();
+        }
+        //逃走フェーズの処理
+        else if (CommonScript.phase == CommonScript.Phase.ESCAPEPHASE)
+        {
+            setTrapPhaseInitFlag = false;
+            BasicProcess();
+            BasicAction();
+        }
+    }
 
+    //基本処理
+    void BasicProcess()
+    {
+        //   Debug.Log("velocity:" + rigidBody.velocity);
         moveDirection.x = 0;
         moveDirection.y = 0;
 
         transform.position = new Vector3(transform.position.x, transform.position.y, 0.0f);
         //被ダメした場合の処理
-        if (animator.GetBool("Damaged")) damageMotion();
+        if (animator.GetBool("Damaged")) DamageMotion();
 
-        //ジャンプ
-        if (Input.GetKeyDown(KeyCode.W) && !animator.GetBool("Damaged"))
-        {
-            if (is_ground)
-            {
-                is_ground = false;
-
-                jumpping(true);
-            }
-        }
         //ジャンプアニメーションの調整
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("JumpToTop"))
         {
-            moveDirection.y = y * Time.deltaTime;
+            moveDirection.y = jumpPower * Time.deltaTime;
             transform.position += moveDirection;
         }
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("fall"))
@@ -73,29 +87,42 @@ public class UnitychanMove : MonoBehaviour
                 animator.SetBool("is_jump", false);
             }
         }
+    }
+    //キー入力による基本動作
+    void BasicAction()
+    {
+        //ジャンプ
+        if (Input.GetKeyDown(KeyCode.W) && !animator.GetBool("Damaged"))
+        {
+            if (is_ground)
+            {
+                is_ground = false;
+
+                Jumpping(true);
+            }
+        }
         //右へ移動
         if (Input.GetKey(KeyCode.D) && !animator.GetBool("Damaged"))
         {
             this.transform.rotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
-            moving(true, 1);
+            Moving(true, 1);
         }
         //左へ移動
         else if (Input.GetKey(KeyCode.A) && !animator.GetBool("Damaged"))
         {
             transform.rotation = Quaternion.Euler(0.0f, -90.0f, 0.0f);
-            moving(true, -1);
-        }
-        else
+            Moving(true, -1);
+        } else
         {
-            moving(false, 0);
+            Moving(false, 0);
         }
     }
 
-    void moving(bool is_move, int val)
+    void Moving(bool is_move, int val)
     {
         if (is_move)
         {
-            moveDirection.x = x * val * Time.deltaTime;
+            moveDirection.x = speed * val * Time.deltaTime;
             moveDirection.y = 0;
             transform.position += moveDirection;
             animator.SetBool("is_running", true);
@@ -106,7 +133,7 @@ public class UnitychanMove : MonoBehaviour
         }
     }
 
-    void jumpping(bool is_jump)
+    void Jumpping(bool is_jump)
     {
         if (is_jump)
         {
@@ -123,7 +150,7 @@ public class UnitychanMove : MonoBehaviour
         playSE(0, 0.4f, 1.0f);
     }
 
-    void damageMotion()
+    void DamageMotion()
     {
         //被ダメ後の無敵時間
         if (animator.GetBool("Damaged"))
@@ -183,7 +210,7 @@ public class UnitychanMove : MonoBehaviour
         if (collision.gameObject.tag == "floor")
         {
             is_ground = true;
-            jumpping(false);
+            Jumpping(false);
         }
     }
     void OnCollisionExit(Collision collision) { }

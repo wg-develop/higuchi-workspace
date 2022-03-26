@@ -14,39 +14,51 @@ public class EnemyMove : MonoBehaviour
     private string playerName = "SD_unitychan_humanoid"; //プレイヤーオブジェクト名
     private Vector3 startPosition = new Vector3(-10, -0.2f, 0); //敵スタート位置
     public static float remainingTime = 0;
+    private Vector3 initPosition; //初期位置
 
     void Start()
     {
+        initPosition = transform.position;
         enemyAnimator = GetComponent<Animator>();
         timerScript = timerGameObject.GetComponent<TimerScript>();
     }
 
     void Update()
     {
-        transform.position = new Vector3(transform.position.x, transform.position.y, 0.0f);
-
-        remainingTime = timerScript.GetTimer(); //残り時間
-        bool isStartedTimer = timerScript.countFlag;
-        if (remainingTime == 120.0f)
+        //罠設置フェーズの処理
+        if (CommonScript.phase == CommonScript.Phase.TRAPPHASE)
         {
-            // 停止→リセット時
-            transform.position = startPosition;
+            transform.position = initPosition;
+
         }
-
-        if (isStartedTimer)
+        //逃走フェーズの処理
+        else if (CommonScript.phase == CommonScript.Phase.ESCAPEPHASE)
         {
-            // タイマー起動中
-            if (remainingTime == 0.0f)
+            transform.position = new Vector3(transform.position.x, transform.position.y, 0.0f);
+
+            remainingTime = timerScript.GetTimer(); //残り時間
+            bool isStartedTimer = timerScript.countFlag;
+            if (remainingTime == 120.0f)
             {
-                // 120秒逃げ切った場合：タイムアップ処理
+                // 停止→リセット時
+                transform.position = startPosition;
+            }
+
+            if (isStartedTimer)
+            {
+                // タイマー起動中
+                if (remainingTime == 0.0f)
+                {
+                    // 120秒逃げ切った場合：タイムアップ処理
+                    Moving(false, 0);
+                }
+                EnemyMoveControl();
+            }
+            else
+            {
+                // タイマー停止中
                 Moving(false, 0);
             }
-            EnemyMoveControl();
-        }
-        else
-        {
-            // タイマー停止中
-            Moving(false, 0);
         }
     }
 

@@ -14,22 +14,20 @@ public class FollowCameraScript : MonoBehaviour
     {
       //SDUnityChan
       this.player = GameObject.Find("SD_unitychan_humanoid");
-      //MaincameraとSDUnityChanの相対距離
-      //offset = transform.position - player.transform.position;
-      offset = cameraRelativePosition + player.transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-      //Debug.Log("SDUnityChan＠カメラ"+player.transform.position);
-      //Maincameraを追従（SDUnitychanにあわせて移動）
-        if (CommonScript.phaseFlag)
+        //Debug.Log("SDUnityChan＠カメラ"+player.transform.position);
+        //Maincameraを追従（SDUnitychanにあわせて移動）
+        if (CommonScript.phase == CommonScript.Phase.TRAPPHASE)
         {
             transform.position = trapPhaseCameraPosition;
-        } else
+        } else if (CommonScript.phase == CommonScript.Phase.ESCAPEPHASE || CommonScript.phase == CommonScript.Phase.STARTESCAPE)
         {
-            transform.position = player.transform.position + offset;
+            //MaincameraとSDUnityChanの相対距離
+            transform.position = cameraRelativePosition + player.transform.position;
         }
     }
 }

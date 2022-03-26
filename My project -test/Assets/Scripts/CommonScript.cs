@@ -4,9 +4,16 @@ using UnityEngine;
 
 public static class CommonScript
 {
+    public static Phase phase = Phase.STARTESCAPE;
+
     //true:罠設置フェーズ
     //false:逃走フェーズ
-    public static bool phaseFlag = false;
+    public enum Phase
+    {
+        STARTESCAPE,
+        ESCAPEPHASE,
+        TRAPPHASE
+    }
 
     //設置したトラップ
     public static List<GameObject> trapGameObjects = new List<GameObject>();

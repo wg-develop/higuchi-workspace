@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class EndPhaseButtonScript : MonoBehaviour
 {
-    public GameObject trapPhaseUIGameObject;
-    public GameObject debugUIGameObject;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,8 +18,6 @@ public class EndPhaseButtonScript : MonoBehaviour
 
     public void OnClick()
     {
-        CommonScript.phaseFlag = false;
-        debugUIGameObject.SetActive(true);
-        trapPhaseUIGameObject.SetActive(false);
+        CommonScript.phase = CommonScript.Phase.STARTESCAPE;
     }
 }
