@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,10 +12,13 @@ public class EnemyMove : MonoBehaviour
     public GameObject timerGameObject;
     private TimerScript timerScript;
     private float enemySpeed = 0.03f; //移動速度
+    private float[] enemyJumpPower = {7, 8, 9 }; //ジャンプ力
+    private int enemyJumpLevel = 0;
     private string playerName = "SD_unitychan_humanoid"; //プレイヤーオブジェクト名
     private Vector3 startPosition = new Vector3(-10, -0.2f, 0); //敵スタート位置
     public static float remainingTime = 0;
     private Vector3 initPosition; //初期位置
+    private System.Random rand = new System.Random();
 
     void Start()
     {
@@ -46,12 +50,18 @@ public class EnemyMove : MonoBehaviour
 
             if (isStartedTimer)
             {
+                Debug.Log("remainingTime: " + remainingTime);
                 // タイマー起動中
                 if (remainingTime == 0.0f)
                 {
                     // 120秒逃げ切った場合：タイムアップ処理
                     Moving(false, 0);
                 }
+
+                // ジャンプパワーアップ
+                if (remainingTime <= 60.0f) enemyJumpLevel = 2;
+                else if (remainingTime <= 90.0f) enemyJumpLevel = 1;
+
                 EnemyMoveControl();
             }
             else
@@ -70,6 +80,10 @@ public class EnemyMove : MonoBehaviour
         //敵の現在位置とプレイヤーの現在地を取得
         Vector3 enemyPosition = this.transform.position;
         Vector3 playerPosition = target.position;
+
+        int jumpFlg = rand.Next(0,5);
+        // 気まぐれにジャンプする
+        Jumping(jumpFlg);
 
         if (enemyPosition.x + 0.6f < playerPosition.x)
         {
@@ -108,6 +122,31 @@ public class EnemyMove : MonoBehaviour
         else
         {
             enemyAnimator.SetBool("is_running", false);
+        }
+    }
+
+    /// <summary>
+    /// 敵をジャンプさせます
+    /// </summary>
+    /// <param name="jumpFlg"></param>
+    void Jumping(int jumpFlg)
+    {
+        if (jumpFlg == 1)
+        {
+            enemyAnimator.SetBool("is_jump", true);
+            //ジャンプアニメーションの調整
+            if (enemyAnimator.GetCurrentAnimatorStateInfo(0).IsName("JumpToTop"))
+            {
+                enemyMoveDirection.y = enemyJumpPower[enemyJumpLevel] * Time.deltaTime;
+                transform.position += enemyMoveDirection;
+            }
+            if (enemyAnimator.GetCurrentAnimatorStateInfo(0).IsName("fall"))
+            {
+                if (enemyMoveDirection.y < 0.7)
+                {
+                    enemyAnimator.SetBool("is_jump", false);
+                }
+            }
         }
     }
 
