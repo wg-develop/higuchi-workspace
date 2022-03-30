@@ -50,7 +50,6 @@ public class EnemyMove : MonoBehaviour
 
             if (isStartedTimer)
             {
-                Debug.Log("remainingTime: " + remainingTime);
                 // タイマー起動中
                 if (remainingTime == 0.0f)
                 {
@@ -128,7 +127,7 @@ public class EnemyMove : MonoBehaviour
     /// <summary>
     /// 敵をジャンプさせます
     /// </summary>
-    /// <param name="jumpFlg"></param>
+    /// <param name="jumpFlg">ジャンプフラグ(ランダム)</param>
     void Jumping(int jumpFlg)
     {
         if (jumpFlg == 1)
