@@ -8,6 +8,7 @@ TagManager:
   - trap
   - damagetrap
   - block-object
+  - end-line
   layers:
   - Default
   - TransparentFX

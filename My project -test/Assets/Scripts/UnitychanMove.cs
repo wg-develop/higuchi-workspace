@@ -218,7 +218,6 @@ public class UnitychanMove : MonoBehaviour
         //オブジェクト衝突時の状態保存
       if(collision.gameObject.tag == "block-object")
         {
-          Debug.Log("hit block-object");
           hitBlockObject　= true;
             //x軸
             if(hitBlockObject){
@@ -227,13 +226,17 @@ public class UnitychanMove : MonoBehaviour
             //y軸
             if(saveHitPositionFlag){
               hitObjectPosition = transform.position.y;
-              Debug.Log("set hitObjectPosition :"+ hitObjectPosition);
             }
         }
+        //壁ぬけしたときの初期化用
+        if(collision.gameObject.tag == "end-line"){
+          transform.position = initPosition;
+        }
     }
-    //floorにいるときだけジャンプできる
+
     void OnCollisionStay(Collision collision)
     {
+      　//floorにいるときだけジャンプできる
         if (collision.gameObject.tag == "floor")
         {
             is_ground = true;
