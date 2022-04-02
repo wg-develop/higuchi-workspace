@@ -131,10 +131,8 @@ public class UnitychanMove : MonoBehaviour
         {
             moveDirection.x = speed * val * Time.deltaTime;
             moveDirection.y = 0;
-            Debug.Log("saveRotatetion: @ move" + hitObjectRotation);
             if(hitBlockObject){
               moveDirection.x = 0;
-              Debug.Log("stop");
             }
             transform.position += moveDirection;
             animator.SetBool("is_running", true);
