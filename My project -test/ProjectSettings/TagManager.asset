@@ -7,6 +7,7 @@ TagManager:
   - floor
   - trap
   - damagetrap
+  - block-object
   layers:
   - Default
   - TransparentFX
