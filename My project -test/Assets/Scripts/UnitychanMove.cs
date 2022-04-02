@@ -23,8 +23,11 @@ public class UnitychanMove : MonoBehaviour
     private GameObject childGameObject0;
     private GameObject childGameObject1;
 
-    // ジャンプ用フラグ
-    private bool is_ground;
+    private bool is_ground;// ジャンプ用フラグ
+    private bool hitBlockObject = false; //移動時壁抜け防止用
+    private bool saveHitPositionFlag = false; //ジャンプ時の壁抜け防止用
+    private float hitObjectRotation ;
+    private float hitObjectPosition ;
 
     private AnimatorStateInfo currentState;
 
@@ -78,12 +81,16 @@ public class UnitychanMove : MonoBehaviour
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("JumpToTop"))
         {
             moveDirection.y = jumpPower * Time.deltaTime;
+            if(hitObjectPosition != 0 ){
+              moveDirection.y = 0;
+            }
             transform.position += moveDirection;
         }
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("fall"))
         {
             if (moveDirection.y < 0.7)
             {
+                hitObjectPosition = 0;
                 animator.SetBool("is_jump", false);
             }
         }
@@ -97,7 +104,7 @@ public class UnitychanMove : MonoBehaviour
             if (is_ground)
             {
                 is_ground = false;
-
+                saveHitPositionFlag = true;
                 Jumpping(true);
             }
         }
@@ -124,6 +131,11 @@ public class UnitychanMove : MonoBehaviour
         {
             moveDirection.x = speed * val * Time.deltaTime;
             moveDirection.y = 0;
+            Debug.Log("saveRotatetion: @ move" + hitObjectRotation);
+            if(hitBlockObject){
+              moveDirection.x = 0;
+              Debug.Log("stop");
+            }
             transform.position += moveDirection;
             animator.SetBool("is_running", true);
         }
@@ -138,7 +150,7 @@ public class UnitychanMove : MonoBehaviour
         if (is_jump)
         {
             animator.SetBool("is_jump", true);
-
+            hitObjectPosition = 0;
             //ジャンプ音
             playSE(1, 1.0f, 1.0f);
         }
@@ -203,6 +215,21 @@ public class UnitychanMove : MonoBehaviour
             //ダメージ音
             playSE(2, 1.0f, 1.2f);
         }
+        //オブジェクト衝突時の状態保存
+      if(collision.gameObject.tag == "block-object")
+        {
+          Debug.Log("hit block-object");
+          hitBlockObject　= true;
+            //x軸
+            if(hitBlockObject){
+              hitObjectRotation = transform.localEulerAngles.y;
+            }
+            //y軸
+            if(saveHitPositionFlag){
+              hitObjectPosition = transform.position.y;
+              Debug.Log("set hitObjectPosition :"+ hitObjectPosition);
+            }
+        }
     }
     //floorにいるときだけジャンプできる
     void OnCollisionStay(Collision collision)
@@ -212,6 +239,18 @@ public class UnitychanMove : MonoBehaviour
             is_ground = true;
             Jumpping(false);
         }
+        //壁抜け防止用　
+        if(collision.gameObject.tag == "block-object")
+        {
+          //x軸制御
+         if(hitObjectRotation != transform.localEulerAngles.y && hitObjectRotation != 0 ){
+            hitObjectRotation = 0;
+            hitBlockObject = false;
+          }
+        }
     }
-    void OnCollisionExit(Collision collision) { }
+    void OnCollisionExit(Collision collision)
+    {
+       hitBlockObject = false;
+     }
 }
