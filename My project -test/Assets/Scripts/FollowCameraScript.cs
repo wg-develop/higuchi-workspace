@@ -13,7 +13,7 @@ public class FollowCameraScript : MonoBehaviour
     void Start()
     {
       //SDUnityChan
-      this.player = GameObject.Find("SD_unitychan_humanoid");
+      this.player = GameObject.Find("player_unitychan");
     }
 
     // Update is called once per frame

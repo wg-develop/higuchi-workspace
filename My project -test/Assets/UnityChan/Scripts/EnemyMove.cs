@@ -11,13 +11,13 @@ public class EnemyMove : MonoBehaviour
     private Vector3 enemyMoveDirection = new Vector3(0, 0, 0);
     public GameObject timerGameObject;
     private TimerScript timerScript;
-    private float enemySpeed = 0.03f; //ˆÚ“®‘¬“x
-    private float[] enemyJumpPower = {7, 8, 9 }; //ƒWƒƒƒ“ƒv—Í
+    private float enemySpeed = 0.03f; //ç§»å‹•é€Ÿåº¦
+    private float[] enemyJumpPower = {7, 8, 9 }; //ã‚¸ãƒ£ãƒ³ãƒ—åŠ›
     private int enemyJumpLevel = 0;
-    private string playerName = "SD_unitychan_humanoid"; //ƒvƒŒƒCƒ„[ƒIƒuƒWƒFƒNƒg–¼
-    private Vector3 startPosition = new Vector3(-10, -0.2f, 0); //“GƒXƒ^[ƒgˆÊ’u
+    private string playerName = "SD_unitychan_humanoid"; //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå
+    private Vector3 startPosition = new Vector3(-10, -0.2f, 0); //æ•µã‚¹ã‚¿ãƒ¼ãƒˆä½ç½®
     public static float remainingTime = 0;
-    private Vector3 initPosition; //‰ŠúˆÊ’u
+    private Vector3 initPosition; //åˆæœŸä½ç½®
     private System.Random rand = new System.Random();
 
     void Start()
@@ -29,35 +29,35 @@ public class EnemyMove : MonoBehaviour
 
     void Update()
     {
-        //ã©İ’uƒtƒF[ƒY‚Ìˆ—
+        //ç½ è¨­ç½®ãƒ•ã‚§ãƒ¼ã‚ºã®å‡¦ç†
         if (CommonScript.phase == CommonScript.Phase.TRAPPHASE)
         {
             transform.position = initPosition;
 
         }
-        //“¦‘–ƒtƒF[ƒY‚Ìˆ—
+        //é€ƒèµ°ãƒ•ã‚§ãƒ¼ã‚ºã®å‡¦ç†
         else if (CommonScript.phase == CommonScript.Phase.ESCAPEPHASE)
         {
             transform.position = new Vector3(transform.position.x, transform.position.y, 0.0f);
 
-            remainingTime = timerScript.GetTimer(); //c‚èŠÔ
+            remainingTime = timerScript.GetTimer(); //æ®‹ã‚Šæ™‚é–“
             bool isStartedTimer = timerScript.countFlag;
             if (remainingTime == 120.0f)
             {
-                // ’â~¨ƒŠƒZƒbƒg
+                // åœæ­¢â†’ãƒªã‚»ãƒƒãƒˆæ™‚
                 transform.position = startPosition;
             }
 
             if (isStartedTimer)
             {
-                // ƒ^ƒCƒ}[‹N“®’†
+                // ã‚¿ã‚¤ãƒãƒ¼èµ·å‹•ä¸­
                 if (remainingTime == 0.0f)
                 {
-                    // 120•b“¦‚°Ø‚Á‚½ê‡Fƒ^ƒCƒ€ƒAƒbƒvˆ—
+                    // 120ç§’é€ƒã’åˆ‡ã£ãŸå ´åˆï¼šã‚¿ã‚¤ãƒ ã‚¢ãƒƒãƒ—å‡¦ç†
                     Moving(false, 0);
                 }
 
-                // ƒWƒƒƒ“ƒvƒpƒ[ƒAƒbƒv
+                // ã‚¸ãƒ£ãƒ³ãƒ—ãƒ‘ãƒ¯ãƒ¼ã‚¢ãƒƒãƒ—
                 if (remainingTime <= 60.0f) enemyJumpLevel = 2;
                 else if (remainingTime <= 90.0f) enemyJumpLevel = 1;
 
@@ -65,35 +65,35 @@ public class EnemyMove : MonoBehaviour
             }
             else
             {
-                // ƒ^ƒCƒ}[’â~’†
+                // ã‚¿ã‚¤ãƒãƒ¼åœæ­¢ä¸­
                 Moving(false, 0);
             }
         }
     }
 
     /// <summary>
-    /// “G‚ÆƒvƒŒƒCƒ„[‚ÌˆÊ’uŠÖŒW‚É‚æ‚Á‚Ä“®ì§Œä‚µ‚Ü‚·
+    /// æ•µã¨ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ä½ç½®é–¢ä¿‚ã«ã‚ˆã£ã¦å‹•ä½œåˆ¶å¾¡ã—ã¾ã™
     /// </summary>
     void EnemyMoveControl()
     {
-        //“G‚ÌŒ»İˆÊ’u‚ÆƒvƒŒƒCƒ„[‚ÌŒ»İ’n‚ğæ“¾
+        //æ•µã®ç¾åœ¨ä½ç½®ã¨ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç¾åœ¨åœ°ã‚’å–å¾—
         Vector3 enemyPosition = this.transform.position;
         Vector3 playerPosition = target.position;
 
         int jumpFlg = rand.Next(0,5);
-        // ‹C‚Ü‚®‚ê‚ÉƒWƒƒƒ“ƒv‚·‚é
+        // æ°—ã¾ãã‚Œã«ã‚¸ãƒ£ãƒ³ãƒ—ã™ã‚‹
         Jumping(jumpFlg);
 
         if (enemyPosition.x + 0.6f < playerPosition.x)
         {
-            // ƒvƒŒƒCƒ„[‚ª“G‚æ‚èƒvƒ‰ƒXˆÊ’u‚É‚¢‚½‚çƒvƒ‰ƒX•ûŒü‚Ö“®‚­
+            // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ•µã‚ˆã‚Šãƒ—ãƒ©ã‚¹ä½ç½®ã«ã„ãŸã‚‰ãƒ—ãƒ©ã‚¹æ–¹å‘ã¸å‹•ã
             Moving(false, 0);
             this.transform.rotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
             Moving(true, 1);
         }
         else if (enemyPosition.x > playerPosition.x + 0.6f)
         {
-            // ƒvƒŒƒCƒ„[‚ª“G‚æ‚èƒ}ƒCƒiƒXˆÊ’u‚É‚¢‚½‚çƒ}ƒCƒiƒX•ûŒü‚Ö“®‚­
+            //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ•µã‚ˆã‚Šãƒã‚¤ãƒŠã‚¹ä½ç½®ã«ã„ãŸã‚‰ãƒã‚¤ãƒŠã‚¹æ–¹å‘ã¸å‹•ã
             Moving(false, 0);
             this.transform.rotation = Quaternion.Euler(0.0f, -90.0f, 0.0f);
             Moving(true, -1);
@@ -106,10 +106,10 @@ public class EnemyMove : MonoBehaviour
     }
 
     /// <summary>
-    /// “G‚ğ‘–‚ç‚¹‚Ü‚·
+    /// æ•µã‚’èµ°ã‚‰ã›ã¾ã™
     /// </summary>
-    /// <param name="is_move">“®ìƒtƒ‰ƒO</param>
-    /// <param name="val">i‚Ş•ûŒü</param>
+    /// <param name="is_move">å‹•ä½œãƒ•ãƒ©ã‚°</param>
+    /// <param name="val">é€²ã‚€æ–¹å‘</param>
     void Moving(bool is_move, int val)
     {
         if (is_move)
@@ -125,15 +125,15 @@ public class EnemyMove : MonoBehaviour
     }
 
     /// <summary>
-    /// “G‚ğƒWƒƒƒ“ƒv‚³‚¹‚Ü‚·
+    ///  æ•µã‚’ã‚¸ãƒ£ãƒ³ãƒ—ã•ã›ã¾ã™
     /// </summary>
-    /// <param name="jumpFlg">ƒWƒƒƒ“ƒvƒtƒ‰ƒO(ƒ‰ƒ“ƒ_ƒ€)</param>
+    /// <param name="jumpFlg">ã‚¸ãƒ£ãƒ³ãƒ—ãƒ•ãƒ©ã‚°(ãƒ©ãƒ³ãƒ€ãƒ )</param>
     void Jumping(int jumpFlg)
     {
         if (jumpFlg == 1)
         {
             enemyAnimator.SetBool("is_jump", true);
-            //ƒWƒƒƒ“ƒvƒAƒjƒ[ƒVƒ‡ƒ“‚Ì’²®
+            //ã‚¸ãƒ£ãƒ³ãƒ—ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®èª¿æ•´
             if (enemyAnimator.GetCurrentAnimatorStateInfo(0).IsName("JumpToTop"))
             {
                 enemyMoveDirection.y = enemyJumpPower[enemyJumpLevel] * Time.deltaTime;
@@ -150,22 +150,22 @@ public class EnemyMove : MonoBehaviour
     }
 
     /// <summary>
-    /// “–‚½‚è”»’è
+    /// å½“ãŸã‚Šåˆ¤å®š
     /// </summary>
-    /// <param name="collision">Õ“Ë‚µ‚½‘Šè‚Ìî•ñ</param>
+    /// <param name="collision">è¡çªã—ãŸç›¸æ‰‹ã®æƒ…å ±</param>
     void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Hit :" + collision.gameObject.name);
+//        Debug.Log("Hit :" + collision.gameObject.name);
         if (collision.gameObject.name == playerName)
         {
-            // “G‚ÆƒvƒŒƒCƒ„[‚ª‚Ô‚Â‚©‚Á‚½‚çƒQ[ƒ€ƒI[ƒo[‰æ–Ê‚Ö‘JˆÚ‚·‚é
+            // æ•µã¨ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒã¶ã¤ã‹ã£ãŸã‚‰ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ç”»é¢ã¸é·ç§»ã™ã‚‹
             SceneManager.LoadScene("GameOverScene");
         }
     }
 
-    //Unity‚¿‚á‚ñ‚Ì‘«‰¹‚ğÄ¶‚·‚éiuRunning@loopvAnimation‚©‚çŒÄ‚Î‚ê‚éj
+    //Unityã¡ã‚ƒã‚“ã®è¶³éŸ³ã‚’å†ç”Ÿã™ã‚‹ï¼ˆã€ŒRunning@loopã€Animationã‹ã‚‰å‘¼ã°ã‚Œã‚‹
     public void PlayFootstepSE()
     {
-        //ƒGƒlƒ~[‚É‚à‘«‰¹‚ğ‚Â‚¯‚é‚Æ‚¤‚é‚³‚»‚¤‚È‚Ì‚Å•Û—¯
+        //ãƒãƒŸãƒ¼ã«ã‚‚è¶³éŸ³ã‚’ã¤ã‘ã‚‹ã¨ã†ã‚‹ã•ãã†ãªã®ã§ä¿ç•™
     }
 }
