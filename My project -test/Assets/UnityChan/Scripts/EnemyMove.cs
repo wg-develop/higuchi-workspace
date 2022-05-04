@@ -33,11 +33,12 @@ public class EnemyMove : MonoBehaviour
         if (CommonScript.phase == CommonScript.Phase.TRAPPHASE)
         {
             transform.position = initPosition;
-
+            GetComponent<Rigidbody>().useGravity = false;
         }
         //逃走フェーズの処理
         else if (CommonScript.phase == CommonScript.Phase.ESCAPEPHASE)
         {
+            GetComponent<Rigidbody>().useGravity = true;
             transform.position = new Vector3(transform.position.x, transform.position.y, 0.0f);
 
             remainingTime = timerScript.GetTimer(); //残り時間
